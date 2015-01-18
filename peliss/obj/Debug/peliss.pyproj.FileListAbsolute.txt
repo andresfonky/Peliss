@@ -1,0 +1,15 @@
+c:\users\fonky\documents\visual studio 2013\Projects\peliss\peliss\bin\Microsoft.PythonTools.WebRole.dll
+c:\users\fonky\documents\visual studio 2013\Projects\peliss\peliss\obj\Debug\attach_server.py
+c:\users\fonky\documents\visual studio 2013\Projects\peliss\peliss\obj\Debug\visualstudio_py_debugger.py
+c:\users\fonky\documents\visual studio 2013\Projects\peliss\peliss\obj\Debug\visualstudio_py_repl.py
+c:\users\fonky\documents\visual studio 2013\Projects\peliss\peliss\obj\Debug\visualstudio_py_util.py
+c:\users\fonky\documents\visual studio 2013\Projects\peliss\peliss\obj\Debug\__init__.py
+c:\users\fonky\documents\visual studio 2013\Projects\peliss\peliss\obj\Debug\__main__.py
+c:\users\fonky\documents\visual studio 2013\Projects\peliss\peliss\bin\AzureSetup.cfg
+c:\users\fonky\documents\visual studio 2013\Projects\peliss\peliss\bin\Microsoft.PythonTools.AzureSetup.exe
+c:\users\fonky\documents\visual studio 2013\Projects\peliss\peliss\bin\Microsoft.PythonTools.AzureSetup.exe.config
+c:\users\fonky\documents\visual studio 2013\Projects\peliss\peliss\bin\wfastcgi.py
+c:\users\fonky\documents\visual studio 2013\Projects\peliss\peliss\obj\Debug\deployment-updated-pyvenv.cfg
+c:\users\fonky\documents\visual studio 2013\Projects\peliss\peliss\ptvs_virtualenv_proxy.py
+c:\users\fonky\documents\visual studio 2013\Projects\peliss\peliss\obj\Debug\web.config
+c:\users\fonky\documents\visual studio 2013\Projects\peliss\peliss\obj\Debug\web.debug.config

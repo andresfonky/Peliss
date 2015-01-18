@@ -1,0 +1,36 @@
+﻿{% extends "app/layout.html" %}
+
+{% block content %}
+
+<form action="" method="get">
+    <input type="text" name="q">
+    <input type="submit" value="Search">
+</form>
+
+{% if error %}
+    <p style="color: red;">Please submit a search term.</p>
+{% endif %}
+
+<p>You searched for: <strong>{{ query }}</strong></p>
+{% if films %}
+    <p>Found {{ films|length }} film{{ films|pluralize }}.</p>
+    <ul style="list-style-type:circle">
+        {% for film in films %}
+            <a id="{{ film.title }}" onmouseenter="myFunction(this)" href="" style="text-decoration:none;">
+                <li>{{ film.title }}</li>
+            </a>
+        {% endfor %}
+    </ul> 
+{% else %}
+<p>No films matched your search criteria.</p>
+{% endif %}
+
+<script>
+    function myFunction(x) {
+        str = x.id
+        titulo = str.split(' ').join('_');
+        x.href = "/film/" + titulo
+    }
+</script>
+
+{% endblock %}

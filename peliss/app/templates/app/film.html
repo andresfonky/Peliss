@@ -1,0 +1,55 @@
+﻿{% extends "app/layout.html" %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+            <h1  id="title" class="page-header">{{ film.title }}</h1>
+        </div>
+
+        
+        <div class="col-lg-3 col-md-4 col-xs-6 thumb">
+            <img class="img-thumbnail" src="{{ film.image }}" alt="My image">
+        </div>
+   
+        <p>Director: {{ film.director }}</p>
+        <p>Año: {{ film.year }}</p>
+        <p>Pais: {{ film.country }} </p>
+
+        {% if user.is_authenticated %}
+                {% if seen %}
+                    <p><font color="green"><font size="6">Ya has visto esta pelicula</font></font></p>  
+                {% else %}
+                    <button id="but" onclick="myFunction()">Añadir</button>
+                {% endif %}   
+        {% else %}
+             <p><font color="red"><font size="6">Registrate para añadir esta película</font></font></p>  
+        {% endif %}        
+
+        <p id="hide" hidden><font color="green"><font size="6">¡ENHORABUENA! Has visto esta película</font></font></p>
+
+        <script>
+        function myFunction() {
+            var str = document.getElementById("title").innerHTML; 
+            var res = str.split(' ').join('_');
+            $.ajax({
+                url: "/add/" + res, // the endpoint
+                type: "GET", // http method
+                success: function (json) {
+
+                },
+                error: function (xhr, errmsg, err) {
+
+                    console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+                }
+            });
+            $("#but").hide("slow");
+            $("#hide").show("slow");
+        }
+        </script>
+ 
+    </div>
+</div>
+
+{% endblock %}
