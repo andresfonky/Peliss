@@ -1,0 +1,53 @@
+﻿{% extends "app/layout.html" %}
+
+{% block content %}
+
+<div class="col-lg-12">
+    <h1 class="page-header">Terminar registro</h1>
+</div>
+<div class="row">
+	<form method="post" action="{% url 'terminarPerfil' %}" class="form-horizontal" enctype="multipart/form-data">
+		{% csrf_token %}
+		<div class="form-group">
+            <label for="id_firstname" class="col-md-2 control-label">Nombre</label>
+            <div class="col-md-10">
+				{{form.first_name}}
+			</div>
+		</div>
+            <div class="form-group">
+                <label for="id_lastname" class="col-md-2 control-label">Apellido</label>
+                <div class="col-md-10">
+                    {{ form.last_name }}
+                </div>
+            </div>
+		<div class="form-group">
+            <label for="id_picture" class="col-md-2 control-label">Imagen de perfil</label>
+            <div class="col-md-10">
+				{{form.picture}}
+			</div>
+		</div>
+		<div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+				<input type="submit" value="Terminar Perfil" />
+			</div>
+		</div>	
+        {% if form.errors %}
+             <p class="validation-summary-errors">Por favor, rellene todos los campos. Campos sin rellenar</p>
+             {% for error in  form.errors %}
+                <ul>
+                    <p class="validation-summary-errors">{{ error}}</p>
+                </ul>
+            {% endfor %}
+        {% endif %}
+	</form>
+</div>
+
+{% endblock %}
+
+
+{% block scripts %}
+
+    {% load staticfiles %}
+<script src="{% static 'app/scripts/jquery.validate.min.js' %}"></script>
+
+{% endblock %}

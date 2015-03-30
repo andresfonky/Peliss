@@ -11,5 +11,10 @@ class ShowSeenFilms(admin.ModelAdmin):
     list_display = ('user', )
     filter_horizontal = ('films',)
 
+class ShowWantFilms(admin.ModelAdmin):
+    list_display = ('user', )
+    filter_horizontal = ('films',)
+
 admin.site.register(models.Film, ShowFilm)
 admin.site.register(models.SeenFilm, ShowSeenFilms)
+admin.site.register(models.WantFilms, ShowWantFilms)

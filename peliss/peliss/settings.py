@@ -3,6 +3,8 @@ Django settings for peliss project.
 """
 
 from os import path
+from os import *
+
 PROJECT_ROOT = path.dirname(path.abspath(path.dirname(__file__)))
 
 DEBUG = True
@@ -64,12 +66,12 @@ USE_TZ = True
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/home/media/media.lawrence.com/media/"
-MEDIA_ROOT = ''
+MEDIA_ROOT = 'C:/Users/Fonky/Documents/Visual Studio 2013/Projects/peliss/peliss/app/static/app/'
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
 # Examples: "http://media.lawrence.com/media/", "http://example.com/media/"
-MEDIA_URL = ''
+MEDIA_URL = '/static/app/'
 
 # Absolute path to the directory static files should be collected to.
 # Don't put anything in this directory yourself; store your static files
@@ -177,7 +179,15 @@ TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 
 # REGISTRATION MODULE
 REGISTRATION_OPEN = True        # If True, users can register
-ACCOUNT_ACTIVATION_DAYS = 30     # One-week activation window; you may, of course, use a different value.
-REGISTRATION_AUTO_LOGIN = True  # If True, the user will be automatically logged in.
-LOGIN_REDIRECT_URL = '/rango/'  # The page you want users to arrive at after they successful log in
-LOGIN_URL = '/accounts/login/'  # The page users are directed to if they are not logged in,
+ACCOUNT_ACTIVATION_DAYS = 7     # One-week activation window; you may, of course, use a different value.
+REGISTRATION_AUTO_LOGIN = False  # If True, the user will be automatically logged in.
+LOGIN_REDIRECT_URL = '/misPelis/'  # The page you want users to arrive at after they successful log in
+LOGIN_URL = '/login/'  # The page users are directed to if they are not logged in,
+
+#EMAIL
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'pelissdjango@gmail.com'
+DEFAULT_FROM_EMAIL = 'pelissdjango@gmail.com'
+EMAIL_HOST_PASSWORD = 'pelissDjangoDeusto'
+EMAIL_PORT = 587

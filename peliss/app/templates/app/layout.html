@@ -24,10 +24,12 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li><a href="{% url 'home' %}">Home</a></li>
+                    <li><a href="{% url 'home' %}">Inicio</a></li>
                     <li><a href="{% url 'peliculas' %}">Peliculas</a></li>
                     {% if user.is_authenticated %}
                     <li><a href="{% url 'misPelis' %}">Mis pelis</a></li>
+                    <li><a href="{% url 'amigos' %}">Amigos</a></li>
+                    <li><a href="{% url 'miPerfil' %}">Mi perfil</a></li>
                     {% endif %}
                 </ul>
                 <form class="navbar-form navbar-left" method="get" action="{% url 'search' %}">
@@ -47,7 +49,11 @@
     {% block content %}{% endblock %}
         <hr/>
         <footer>
-            <p>&copy; {{ year }} - Mis Peliss</p>
+            <ul class="nav navbar-nav">
+                <li class="navbar-text"><p><a href="{% url 'home' %}">&copy; {{ year }} - Mis Peliss</a></p></li>
+                <li class="navbar-text"><p><a href="{% url 'contact' %}">Contacto</a></p></li>
+                <li class="navbar-text"><p><a href="{% url 'tecnologias' %}">Tecnologías</a></p></li>
+            </ul>
         </footer>
     </div>
 
