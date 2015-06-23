@@ -2,35 +2,75 @@
 
 {% block content %}
 
-<form action="" method="get">
-    <input type="text" name="q">
-    <input type="submit" value="Search">
-</form>
+<div class="col-lg-12">
+    <h1  id="username" class="page-header">{{ title }}</h1>
+</div>
+    <form action="" method="get">
+        <input type="text" name="q">
+        <input type="submit" value="Search">
+    </form>
 
-{% if error %}
-    <p style="color: red;">Please submit a search term.</p>
-{% endif %}
+    {% if error %}
+    <p style="color: red;">Por favor, introduzca un término de búsqueda.</p>
+    {% endif %}
 
-<p>You searched for: <strong>{{ query }}</strong></p>
-{% if films %}
-    <p>Found {{ films|length }} film{{ films|pluralize }}.</p>
-    <ul style="list-style-type:circle">
-        {% for film in films %}
-            <a id="{{ film.title }}" onmouseenter="myFunction(this)" href="" style="text-decoration:none;">
-                <li>{{ film.title }}</li>
-            </a>
-        {% endfor %}
-    </ul> 
-{% else %}
-<p>No films matched your search criteria.</p>
-{% endif %}
+    <p>Has buscado: <strong>{{ query }}</strong></p>
+    <div class="navbar">
+        <ul class="nav nav-tabs">
+            <li id="tabs1"><a href="#tabs-1" data-toggle="tab">Pel&iacuteculas</a></li>
+            <li id="tabs2"><a href="#tabs-2" data-toggle="tab">Usuarios</a></li>
+        </ul>
+    </div>
 
-<script>
-    function myFunction(x) {
-        str = x.id
-        titulo = str.split(' ').join('_');
-        x.href = "/film/" + titulo
-    }
-</script>
+    <div id="my-tab-content" class="tab-content">
+        <div id="tabs-1" class="tab-pane active">
+        {% if films %}
+            <div class="container">
+                <div class="row">
+                    <p>Encontradas {{ films|length }} película{{ films|pluralize }}.</p>
+                    <ul style="list-style-type:circle">
+                    {% for film in films %}
+                        <li>
+                            <a id="{{ film.title }}" onmouseenter="myFunction(this)" href="" style="text-decoration:none;">
+                            {{ film.title }}
+                            </a>
+                        </li>
+                       
+                    {% endfor %}
+                    </ul> 
+                </div>
+            </div>
+        {% else %}
+        <p>Ninguna película coincide con tus criterios de búsqueda.</p>
+        {% endif %}
+        </div>
+
+        <div id="tabs-2" class="tab-pane active">
+        {% if usuarios %}
+            <div class="container">
+                <div class="row">
+                    <p>Encontrados {{ usuarios|length }} usuario{{ usuarios|pluralize }}.</p>
+                    <ul style="list-style-type:circle">
+                    {% for usuario in usuarios %}
+                        <li>
+                            <a href="/usuario/{{usuario.username}}">{{ usuario.username }}</a>
+                        </li>
+                    {% endfor %}
+                    </ul> 
+                </div>
+            </div>
+        {% else %}
+        <p>Ningun usuario coincide con tus criterios de búsqueda.</p>
+        {% endif %}
+
+        <script>
+            function myFunction(x) {
+                str = x.id
+                titulo = str.split(' ').join('_');
+                x.href = "/film/" + titulo
+            }
+        </script>
+    </div>
+</div>
 
 {% endblock %}

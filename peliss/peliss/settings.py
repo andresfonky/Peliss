@@ -41,15 +41,15 @@ LOGIN_URL = '/login'
 # timezone as the operating system.
 # If running in a Windows environment this must be set to the same as your
 # system time zone.
-TIME_ZONE = 'Spain/Madrid'
+TIME_ZONE = 'Europe/Madrid'
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
-LANGUAGE_CODE = 'es'
+LANGUAGE_CODE = 'en-us'
 
 #Date format
 DATE_INPUT_FORMATS = ('%d/%m/%y')
-DATETIME_FORMAT = ('%d/%m/%y')
+DATETIME_FORMAT = ('%d/%m/%Y %H:%M:%S')
 
 SITE_ID = 1
 
@@ -181,7 +181,7 @@ TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 REGISTRATION_OPEN = True        # If True, users can register
 ACCOUNT_ACTIVATION_DAYS = 7     # One-week activation window; you may, of course, use a different value.
 REGISTRATION_AUTO_LOGIN = False  # If True, the user will be automatically logged in.
-LOGIN_REDIRECT_URL = '/misPelis/'  # The page you want users to arrive at after they successful log in
+LOGIN_REDIRECT_URL = '/rango/'  # The page you want users to arrive at after they successful log in
 LOGIN_URL = '/login/'  # The page users are directed to if they are not logged in,
 
 #EMAIL

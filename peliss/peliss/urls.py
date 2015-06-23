@@ -14,18 +14,28 @@ admin.autodiscover()
 urlpatterns = patterns('',
     #Examples:
     url(r'^$', 'app.views.home', name='home'),
-    #REGISTRATION
+    #REGISTRO
     url(r'^accounts/', include('registration.backends.default.urls')),
     #USUARIO
     url(r'^terminarPerfil', 'app.views.terminarPerfil', name='terminarPerfil'),
     url(r'^finPerfil', 'app.views.finPerfil', name='finPerfil'),
     url(r'^miPerfil$', 'app.views.miPerfil', name='miPerfil'),
     url(r'^editarUsuario', 'app.views.editarUsuario', name='editarUsuario'),
+    url(r'^cambiarPrivado', 'app.views.cambiarPrivado', name='cambiarPrivado'),
     url(r'^misPelis', 'app.views.misPelis', name='misPelis'),
-    url(r'^amigos', 'app.views.amigos', name='amigos'),
+    url(r'^quieroVerPelis', 'app.views.quieroVerPelis', name='quieroVerPelis'),
+    #AMIGOS
+    url(r'^usuario/([a-zA-Z0-9_]+)', 'app.views.usuario', name='usuario'),
+    url(r'^addFriend/([a-zA-Z0-9_]+)', 'app.views.addFriend', name='addFriend'),
+    url(r'^deleteFriend/([a-zA-Z0-9_]+)', 'app.views.deleteFriend', name='deleteFriend'),
     #PELICULAS
     url(r'^peliculas$', 'app.views.peliculas', name='peliculas'),
-    url(r'^film/([a-zA-Z0-9_]+)', 'app.views.film', name='film'),
+    url(r'^film/([a-zA-Z0-9_%]+)', 'app.views.film', name='film'),
+    #ADD FILM
+    url(r'^add/([a-zA-Z0-9_]+)', 'app.views.add', name='add'),
+    url(r'^want/([a-zA-Z0-9_]+)', 'app.views.want', name='want'),
+    url(r'^deleteAdd/([a-zA-Z0-9_]+)', 'app.views.deleteAdd', name='deleteAdd'),
+    url(r'^deleteWant/([a-zA-Z0-9_]+)', 'app.views.deleteWant', name='deleteWant'),
     # ADMIN
     url(r'^admin/', include(admin.site.urls)),
     #APLICACION
@@ -61,8 +71,6 @@ urlpatterns = patterns('',
     #OTROS
     #Ejemplo current user
     url(r'^currentuser$', 'app.views.currentuser', name='currentuser'),
-    #Ejemplo add bd
-    url(r'^add/([a-zA-Z0-9_]+)', 'app.views.add', name='add'),
     #Ejemplo basico tiempo
     url(r'^time/$', 'app.views.current_datetime', name='current_datetime'),
     url(r'^time/plus/(\d{1,2})', 'app.views.hours_ahead', name='hours_ahead'),
@@ -73,4 +81,7 @@ urlpatterns = patterns('',
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
     #email
     url(r'^email', 'app.views.email', name='email'),
+    #prueba
+    url(r'^prueba', 'app.views.prueba', name='prueba'),
+
 )

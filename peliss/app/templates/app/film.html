@@ -10,7 +10,7 @@
 
         
         <div class="col-lg-3 col-md-4 col-xs-6 thumb">
-            <img class="img-thumbnail" src="{{ film.image }}" alt="My image">
+            <img class="img-thumbnail" src="{{ film.image }}" alt="My image" height="214" width="317">
         </div>
    
         <p>Director: {{ film.director }}</p>
@@ -18,20 +18,73 @@
         <p>Pais: {{ film.country }} </p>
 
         {% if user.is_authenticated %}
-                {% if seen %}
-                    <p><font color="green"><font size="6">Ya has visto esta pelicula</font></font></p>  
-                {% else %}
-                    <button id="but" onclick="myFunction()">Añadir</button>
-                {% endif %}   
+            {% if seen %}
+                <button id="eliminarVisto" class="btn btn-danger" onclick="eliminarVisto()">No he visto</button>                
+                <p id="textVisto"><font color="green"><font size="6">Ya has visto esta pelicula</font></font></p>
+                <p id="tweetVisto"><a href="https://twitter.com/intent/tweet?button_hashtag=Peliss&text=He%20a%C3%B1adido%20como%20vista%20la%20pel%C3%ADcula {{ film.title }}"  class="twitter-hashtag-button" data-size="large" data-url="http://www.peliss.com">Cuentalo</a></p>
+                <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>  
+                <div id="faceVisto" hidden class="fb-share-button" data-href="http://www.mispeliss.com/film/{{film.title}}" data-layout="button_count"></div>
+         {% elif wanted %}
+        		<button id="butVisto" class="btn btn-success" onclick="showVisto()">Vista</button>
+                <button id="eliminarQuiero" class="btn btn-danger" onclick="eliminarQuiero()">No quiero ver</button>
+                <p id="textQuiero"><font color="green"><font size="6">Quieres ver esta película</font></font></p>
+                <p id="tweetQuiero"><a href="https://twitter.com/intent/tweet?button_hashtag=Peliss&text=Quiero%20ver {{ film.title }}%20%C2%BFAlguien%20se%20apunta%3F" class="twitter-hashtag-button" data-lang="es" data-size="large">Invita a tus amigos a ver la peli</a></p>
+                <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+                <div id="faceQuiero" hidden class="fb-share-button" data-href="http://www.mispeliss.com/film/{{film.title}}" data-layout="button_count"></div>
+        {% else %}
+                <button id="butVisto" class="btn btn-success" onclick="showVisto()">Vista</button>
+                <button id="butQuiero" class="btn btn-warning" onclick="showQuiero()">Quiero ver</button>
+            {% endif %}    
         {% else %}
              <p><font color="red"><font size="6">Registrate para añadir esta película</font></font></p>  
-        {% endif %}        
+        {% endif %}  
 
-        <p id="hide" hidden><font color="green"><font size="6">¡ENHORABUENA! Has visto esta película</font></font></p>
+        <button id="butVisto" onclick="showVisto()" hidden>Visto</button>
+        <button id="butQuiero" onclick="showQuiero()" hidden>Quiero ver</button>
+        <button id="eliminarVisto" onclick="eliminarVisto()" hidden>No he visto</button>    
+        <button id="eliminarQuiero" onclick="eliminarQuiero()" hidden>No quiero ver</button>
 
+        <!-- -------------------------------------------------- -->
+        <!-- VISTO -->  
+        <div class="demo-wrapper">
+	        <div class="html5-dialog">
+		        <dialog id="windowVisto">
+			        <h3 align="center">Has visto {{film.title}}</h3>
+			        <p align="left">Puedes compartirlo con tus amigos</p>
+			        <a href="https://twitter.com/intent/tweet?button_hashtag=Peliss&text=He%20a%C3%B1adido%20como%20vista%20la%20pel%C3%ADcula {{ film.title }}"  class="twitter-hashtag-button" data-size="large" data-url="http://www.peliss.com">Tweet #Peliss</a>
+                    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+                    <button id="exit"  onclick="exitVisto()">Exit</button>
+		        </dialog>
+	        </div>
+        </div>
+                    
+        <p id="textVisto" hidden><font color="green"><font size="6">¡ENHORABUENA! Has visto esta película</font></font></p>
+        <p id="tweetVisto" hidden><a href="https://twitter.com/intent/tweet?button_hashtag=Peliss&text=He%20a%C3%B1adido%20como%20vista%20la%20pel%C3%ADcula {{ film.title }}"  class="twitter-share-button" data-size="large" data-url="http://www.peliss.com"></a></p>
+        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>  
+        <div id="faceVisto" hidden class="fb-share-button" data-href="http://www.mispeliss.com/film/{{film.title}}" data-layout="button_count"></div>
+
+        <!-- -------------------------------------------------- -->
+        <!-- QUIERO -->
+        <div class="demo-wrapper">
+	        <div class="html5-dialog">
+		        <dialog id="windowQuiero">
+			        <h3 align="center">Quieres ver {{film.title}}</h3>
+			        <p align="left">Puedes compartirlo con tus amigos y quedar para verla juntos</p>
+			        <a href="https://twitter.com/intent/tweet?button_hashtag=Peliss&text=Quiero%20ver%20%C2%BFAlguien%20se%20apunta%3F" class="twitter-hashtag-button" data-lang="es" data-size="large"></a></p>
+                    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+                    <button id="exit"  onclick="exitQuiero()">Exit</button>
+		        </dialog>
+	        </div>
+        </div>
+
+        <p id="textQuiero" hidden><font color="green"><font size="6">Quieres ver esta película</font></font></p>
+        <p id="tweetQuiero" hidden><a href="https://twitter.com/intent/tweet?button_hashtag=Peliss&text=Quiero%20ver%20%C2%BFAlguien%20se%20apunta%3F" class="twitter-hashtag-button" data-lang="es" data-size="large"></a></p>
+        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+        <div id="faceQuiero" hidden class="fb-share-button" data-href="http://www.mispeliss.com/film/{{film.title}}" data-layout="button_count"></div>
+        
         <script>
-        function myFunction() {
-            var str = document.getElementById("title").innerHTML; 
+        function showVisto() {
+            var str = document.getElementById("title").innerHTML;
             var res = str.split(' ').join('_');
             $.ajax({
                 url: "/add/" + res, // the endpoint
@@ -41,14 +94,111 @@
                 },
                 error: function (xhr, errmsg, err) {
 
+                console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+                }
+            });
+
+            var dialog = document.getElementById('windowVisto');
+            dialog.show();
+
+            $("#butVisto").hide("slow");
+            $("#butQuiero").hide("slow");
+            $("#tweetQuiero").hide("slow");
+            $("#faceQuiero").hide("slow");
+            $("#textQuiero").hide("slow");
+            $("#eliminarQuiero").hide("slow");
+            $("#textVisto").show("slow");
+            $("#tweetVisto").show("slow");
+            $("#faceVisto").show("slow");
+            $("#eliminarVisto").show("slow");
+            $("#eliminarVisto").addClass("btn btn-danger");
+        }
+
+        function exitVisto() {
+            var dialog = document.getElementById('windowVisto');
+            dialog.close();
+        }
+
+        function eliminarVisto() {
+            var str = document.getElementById("title").innerHTML;
+            var res = str.split(' ').join('_');
+            $.ajax({
+                url: "/deleteAdd/" + res, // the endpoint
+                type: "GET", // http method
+                success: function (json) {
+
+                },
+                error: function (xhr, errmsg, err) {
+
                     console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
                 }
             });
-            $("#but").hide("slow");
-            $("#hide").show("slow");
+
+            $("#textVisto").hide("slow");
+            $("#tweetVisto").hide("slow");
+            $("#faceVisto").hide("slow");
+            $("#eliminarVisto").hide("slow");
+            $("#butVisto").show("slow");
+            $("#butVisto").addClass("btn btn-success")
+            $("#butQuiero").show("slow");
+            $("#butQuiero").addClass("btn btn-warning")
         }
+
+        function showQuiero() {
+            var str = document.getElementById("title").innerHTML;
+            var res = str.split(' ').join('_');
+            $.ajax({
+                url: "/want/" + res, // the endpoint
+                type: "GET", // http method
+                success: function (json) {
+
+                },
+                error: function (xhr, errmsg, err) {
+
+                    console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+                }
+            });
+
+            var dialog = document.getElementById('windowQuiero');
+            dialog.show();
+
+            $("#butQuiero").hide("slow");
+            $("#textQuiero").show("slow");
+            $("#tweetQuiero").show("slow");
+            $("#faceQuiero").show("slow");
+            $("#eliminarQuiero").show("slow");
+            $("#eliminarQuiero").addClass("btn btn-danger");
+        }
+
+        function exitQuiero() {
+            var dialog = document.getElementById('windowQuiero');
+            dialog.close();
+        }
+
+        function eliminarQuiero() {
+            var str = document.getElementById("title").innerHTML;
+            var res = str.split(' ').join('_');
+            $.ajax({
+                url: "/deleteWant/" + res, // the endpoint
+                type: "GET", // http method
+                success: function (json) {
+
+                },
+                error: function (xhr, errmsg, err) {
+
+                    console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+                }
+            });
+
+            $("#textQuiero").hide("slow");
+            $("#tweetQuiero").hide("slow");
+            $("#faceQuiero").hide("slow");
+            $("#eliminarQuiero").hide("slow");
+            $("#butQuiero").show("slow");
+            $("#butQuiero").addClass("btn btn-warning");
+        }
+
         </script>
- 
     </div>
 </div>
 

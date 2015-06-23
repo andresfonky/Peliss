@@ -7,15 +7,45 @@
         <div class="col-lg-12">
             <h1  id="title" class="page-header">{{ user.username }}</h1>
         </div>
-         <div class="col-lg-3 col-md-4 col-xs-6 thumb">
-            <img class="img-thumbnail" src="{{ user.picture.url }}" alt="My image" height="500" width="350">
+        <div class="col-lg-3 col-md-4 col-xs-6 thumb">
+            <img class="img-thumbnail" src="{{ image }}" alt="My image" width="450" height="300" >
         </div>
         <p><strong>Nombre:</strong> {{ user.first_name }}</p>
         <p><strong>Apellidos:</strong> {{ user.last_name }}</p>
+        {% if user.privado %}
+            <p><strong>Privado:</strong><input onclick="cambiar()" type="checkbox" checked></p>
+        {% else %}
+            <p><strong>Privado:</strong><input onclick="cambiar()" type="checkbox"></p>
+        {% endif %}
+        <a href="/editarUsuario" class="btn btn-info" role="button">Modificar perfil</a>
+        
+
         <div class="col-lg-12">
             <h1  id="title" class="page-header">Mis amigos</h1>
+            <ul style="list-style-type:circle">
+                {% for ami in amigos %}
+                    <a id="{{ ami.username }}" href="/usuario/{{ ami.username }}" style="text-decoration:none;">
+                        <li >{{ ami.username }}</li>
+                    </a>
+                {% endfor %}
+            </ul>
         </div>
+
+        <script>
+            function cambiar() {
+                $.ajax({
+                    url: "/cambiarPrivado/", // the endpoint
+                    type: "GET", // http method
+                    success: function (json) {
+
+                    },
+                    error: function (xhr, errmsg, err) {
+
+                    console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+                    }
+                });
+            }
+        </script>
     </div>
 </div>
-
 {% endblock %}
