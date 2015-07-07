@@ -3,7 +3,7 @@ Definition of urls for peliss.
 """
 from datetime import datetime
 from django.conf import settings
-from django.conf.urls import patterns, url
+from django.conf.urls import patterns, url, include
 from app.forms import BootstrapAuthenticationForm
 
 # Uncomment the next lines to enable the admin:
@@ -11,7 +11,11 @@ from django.conf.urls import include
 from django.contrib import admin
 admin.autodiscover()
 
+if settings.DEBUG:
+    import debug_toolbar
+
 urlpatterns = patterns('',
+    url(r'^__debug__/', include(debug_toolbar.urls)),
     #Examples:
     url(r'^$', 'app.views.home', name='home'),
     #REGISTRO
@@ -24,6 +28,7 @@ urlpatterns = patterns('',
     url(r'^cambiarPrivado', 'app.views.cambiarPrivado', name='cambiarPrivado'),
     url(r'^misPelis', 'app.views.misPelis', name='misPelis'),
     url(r'^quieroVerPelis', 'app.views.quieroVerPelis', name='quieroVerPelis'),
+    url(r'^recomendaciones', 'app.views.recomendaciones', name='recomendaciones'),
     #AMIGOS
     url(r'^usuario/([a-zA-Z0-9_]+)', 'app.views.usuario', name='usuario'),
     url(r'^addFriend/([a-zA-Z0-9_]+)', 'app.views.addFriend', name='addFriend'),

@@ -6,6 +6,7 @@
     <RootNamespace>peliss</RootNamespace>
     <InterpreterId>{b2cd2bb9-62e7-4273-ad6e-9ac2f0547f27}</InterpreterId>
     <InterpreterVersion>3.4</InterpreterVersion>
+    <NameOfLastUsedPublishProfile>peliss (2)</NameOfLastUsedPublishProfile>
   </PropertyGroup>
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -68,6 +69,7 @@
       <SubType>Code</SubType>
     </Content>
     <Content Include="app\templates\app\peliss.html" />
+    <Content Include="app\templates\app\recomendaciones.html" />
     <Content Include="app\templates\app\usuario.html" />
     <Content Include="app\templates\app\miPerfil.html" />
     <Content Include="app\templates\app\misPelis.html" />
@@ -75,6 +77,8 @@
     <Content Include="app\templates\app\grid.html" />
     <Content Include="app\templates\app\film.html" />
     <Content Include="app\templates\app\terminarPerfil.html" />
+    <None Include="peliss.pubxml" />
+    <None Include="peliss %282%29.pubxml" />
     <Content Include="requirements.txt" />
     <Content Include="db.sqlite3" />
     <Content Include="app\static\app\content\bootstrap.css" />

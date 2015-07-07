@@ -3,15 +3,16 @@
 {% block content %}
 
 <div class="container">
-    <div class="row">
         <div class="col-lg-12">
             <h1  id="username" class="page-header">{{ usuario.username }}</h1>
         </div>
         <div class="col-lg-3 col-md-4 col-xs-6 thumb">
             <img class="img-thumbnail" src="{{ image }}" alt="My image" width="450" height="300" >
         </div>
-        <p><strong>Nombre:</strong> {{ usuario.first_name }}</p>
-        <p><strong>Apellidos:</strong> {{ usuario.last_name }}</p>
+        {% if noPrivate %}
+            <p><strong>Nombre:</strong> {{ usuario.first_name }}</p>
+            <p><strong>Apellidos:</strong> {{ usuario.last_name }}</p>
+        {% endif %}
 
          <!--**********************************************************************************************************-->
         <!--ANADIR AMIGO-->
@@ -70,76 +71,76 @@
             $("#add").show("slow");
         }
         </script> 
-
+    </div>
         <!--**********************************************************************************************************-->
         <!--PELICULAS SI AMIGOS-->
-        {% if amigos %}
-            <div class="col-lg-12">
-                <h1 class="page-header">PELICULAS</h1>
-            </div>
-
+    <div class="container">
+        <div class="col-lg-12">
+            <h1 class="page-header">PELICULAS</h1>
+        </div>
+        {% if amigos %}   
             <div class="navbar">
                 <ul class="nav nav-tabs">
-                    <li id="tabs1"><a href="#tabs-1" data-toggle="tab">Imágenes</a></li>
-                    <li id="tabs2"><a href="#tabs-2" data-toggle="tab">Lista</a></li>
+                    <li id="tabs1"><a href="#tabs-1" data-toggle="tab">Vistas</a></li>
+                    <li id="tabs2"><a href="#tabs-2" data-toggle="tab">Quiere ver</a></li>
                 </ul>
             </div>
-
-            <div id="my-tab-content" class="tab-content">
-                <div id="tabs-1" class="tab-pane active">
-                {% if some %}
-                    <div class="container">
-                        <div class="row">
-                            {% for film in films %}
-                                <div class="col-lg-3 col-md-4 col-xs-6 thumb">
-                                    <a id="{{ film.title }}"class="thumbnail"  onmouseenter="myFunction(this)" href="" style="text-decoration:none;">
-                                        <img class="img-responsive" src="{{ film.image }}" alt="My image">
-                                        <h5 align="center">{{ film.title }}</h5>
+            {% if noPrivate %}
+                <ul id="my-tab-content" class="tab-content">
+                    <div id="tabs-1" class="tab-pane active">
+                        {% if fullSeen %}
+                            <ul style="list-style-type:circle">
+                                {% for se in seen %}
+                                    <a id="{{ se.title }}" onmouseenter="myFunction(this)" href="" style="text-decoration:none;">
+                                        <li>{{ se.title }}</li>
                                     </a>
-                                </div>
-                            {% endfor %}
-                        </div>
+                                {% endfor %}
+                            </ul>    
+                        {% else %}
+                            <p><font color="red"><font size="6">{{ usuario.username }} no ha añadido ninguna película</font></font></p>  
+                        {% endif %}
                     </div>
-                    {% else %}
-                    <p><font color="red"><font size="6">No has añadido ninguna película</font></font></p>  
-                    {% endif %}
+
+                    <div id="tabs-2" class="tab-pane">
+                        {% if fullWanted %}
+                            <ul style="list-style-type:circle">
+                                {% for want in wanted %}
+                                    <a id="{{ want.title }}" onmouseenter="myFunction(this)" href="" style="text-decoration:none;">
+                                        <li>{{ want.title }}</li>
+                                    </a>
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            <p><font color="red"><font size="6">{{ usuario.username }} no ha añadido ninguna película</font></font></p>  
+                        {% endif %}
+                    </div>
                 </div>
-
-                <div id="tabs-2" class="tab-pane">
-                    {% if some %}
-                    <ul style="list-style-type:circle">
-                        {% for film in films %}
-                            <a id="{{ film.title }}" onmouseenter="myFunction(this)" href="" style="text-decoration:none;">
-                                <li>{{ film.title }}</li>
-                            </a>
-                        {% endfor %}
-                    </ul>
-                    {% else %}
-                    <p><font color="red"><font size="6">No has añadido ninguna película</font></font></p>  
-                    {% endif %}
-                </div>
-            </div>
-
-            <script>
-                function myFunction(x) {
-                    str = x.id
-                    titulo = str.split(' ').join('_');
-                    x.href = "/film/" + titulo
-                }
-
-                function showStuff(element) {
-                    var tabContents = document.getElementsByClassName('tabContent');
-                    for (var i = 0; i < tabContents.length; i++) {
-                        tabContents[i].style.display = 'none';
-                    }
-
-                    // change tabsX into tabs-X in order to find the correct tab content
-                    var tabContentIdToShow = element.id.replace(/(\d)/g, '-$1');
-                    document.getElementById(tabContentIdToShow).style.display = 'block';
-                }
-            </script>
+            {% else %}
+                <p><font color="red"><font size="6">{{ usuario.username }} es privado</font></font></p>
+            {% endif %}
+        {% else %}
+            <p><font color="red"><font size="6">Tienes que ser amigo de {{ usuario.username }} para ver sus películas</font></font></p>
         {% endif %}    
+
+        <script>
+            function myFunction(x) {
+                str = x.id
+                titulo = str.split(' ').join('_');
+                x.href = "/film/" + titulo
+            }
+
+            function showStuff(element) {
+                var tabContents = document.getElementsByClassName('tabContent');
+                for (var i = 0; i < tabContents.length; i++) {
+                    tabContents[i].style.display = 'none';
+                }
+
+                // change tabsX into tabs-X in order to find the correct tab content
+                var tabContentIdToShow = element.id.replace(/(\d)/g, '-$1');
+                document.getElementById(tabContentIdToShow).style.display = 'block';
+            }
+        </script>
     </div>
-</div>
+
 
 {% endblock %}

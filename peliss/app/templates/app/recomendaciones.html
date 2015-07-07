@@ -1,0 +1,70 @@
+﻿{% extends "app/layout.html" %}
+
+{% block content %}
+
+<div class="col-lg-12">
+    <h1 class="page-header">PELICULAS recomendadas para {{ user.username }}</h1>
+</div>
+
+<div class="navbar">
+    <ul class="nav nav-tabs">
+        <li id="tabs1"><a href="#tabs-1" data-toggle="tab">Imágenes</a></li>
+        <li id="tabs2"><a href="#tabs-2" data-toggle="tab">Lista</a></li>
+    </ul>
+</div>
+
+<div id="my-tab-content" class="tab-content">
+    <div id="tabs-1" class="tab-pane active">
+    {% if some and films %}
+        <div class="container">
+            <div class="row">
+                {% for film in films %}
+                    <div class="col-lg-3 col-md-4 col-xs-6">
+                        <a id="{{ film.title }}"class="thumbnail"  onmouseenter="myFunction(this)" href="" style="text-decoration:none;">
+                            <img src="{{ film.image }}" max-weight="317">
+                            <h5 align="center">{{ film.title }}</h5>
+                        </a>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% else %}
+        <p><font color="red"><font size="6">No has añadido ninguna película</font></font></p>  
+    {% endif %}
+    </div>
+
+    <div id="tabs-2" class="tab-pane">
+        {% if some and films %}
+        <ul style="list-style-type:circle">
+            {% for film in films %}
+                <a id="{{ film.title }}" onmouseenter="myFunction(this)" href="" style="text-decoration:none;">
+                    <li>{{ film.title }}</li>
+                </a>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <p><font color="red"><font size="6">No has añadido ninguna película</font></font></p>  
+        {% endif %}
+    </div>
+</div>
+
+<script>
+    function myFunction(x) {
+        str = x.id
+        titulo = str.split(' ').join('_');
+        x.href = "/film/" + titulo
+    }
+
+    function showStuff(element) {
+        var tabContents = document.getElementsByClassName('tabContent');
+        for (var i = 0; i < tabContents.length; i++) {
+            tabContents[i].style.display = 'none';
+        }
+
+        // change tabsX into tabs-X in order to find the correct tab content
+        var tabContentIdToShow = element.id.replace(/(\d)/g, '-$1');
+        document.getElementById(tabContentIdToShow).style.display = 'block';
+    }
+</script>
+
+{% endblock %}

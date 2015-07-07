@@ -2,10 +2,12 @@
 Django settings for peliss project.
 """
 
-from os import path
+import os
 from os import *
 
 PROJECT_ROOT = path.dirname(path.abspath(path.dirname(__file__)))
+SITE_ROOT = os.path.dirname(os.path.realpath(__file__))
+#RUTA_PROYECTO = os.path.dirname(os.path.realpath(__file__))
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -16,6 +18,7 @@ ALLOWED_HOSTS = (
 
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),
+    ('andres', 'andres.fonquernie@opendeusto.es'),
 )
 
 MANAGERS = ADMINS
@@ -66,7 +69,8 @@ USE_TZ = True
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/home/media/media.lawrence.com/media/"
-MEDIA_ROOT = 'C:/Users/Fonky/Documents/Visual Studio 2013/Projects/peliss/peliss/app/static/app/'
+# MEDIA_ROOT = os.path.join(RUTA_PROYECTO,'carga')
+MEDIA_ROOT = path.join(PROJECT_ROOT, 'app/static/app/')
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
@@ -113,6 +117,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -139,6 +144,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'app',
     'registration', # REGISTRO
+    'debug_toolbar', #SQL
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
@@ -153,24 +159,42 @@ INSTALLED_APPS = (
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
-    'filters': {
-        'require_debug_false': {
-            '()': 'django.utils.log.RequireDebugFalse'
+    'formatters': {
+        'standard':{
+            'format' : "[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s] %(message)s",
+            'datefmt' : "%d/%b/%Y %H:%M:%S"
         }
-    },
+     },
+
     'handlers': {
         'mail_admins': {
             'level': 'ERROR',
-            'filters': ['require_debug_false'],
-            'class': 'django.utils.log.AdminEmailHandler'
+            'class': 'django.utils.log.AdminEmailHandler',
+            'include_html': True,
+        },
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': 'logs/mylog.log',
+            'formatter': 'standard'
+        },
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'standard'
         }
     },
     'loggers': {
-        'django.request': {
-            'handlers': ['mail_admins'],
-            'level': 'ERROR',
+        'django': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
             'propagate': True,
         },
+        'django.request': {
+            'handlers': ['mail_admins', 'file'],
+            'level': 'WARNING',
+            'propagate': True,
+        }
     }
 }
 

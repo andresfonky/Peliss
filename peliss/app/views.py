@@ -18,9 +18,20 @@ from app.models import User, Film, SeenFilm, News, WantedFilm
 from app.forms import UserProfileForm, EditProfileForm
 from peliss.settings import EMAIL_HOST_USER
 
+import logging
+
+# Get an instance of a logger
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
+
 def home(request):
     """Renders the home page."""
     current_user = request.user
+    logger.debug("DEBUG")
+    logger.info("INFO")
+    logger.warning("WARNING")
+    logger.error("ERROR")
+
     if request.user.is_authenticated():
         if request.user.finalizado is False:
             return redirect('/terminarPerfil')
@@ -106,6 +117,7 @@ def finPerfil(request):
 def miPerfil(request):
     """Renders the contact page."""
     current_user = request.user
+    logger.debug('miPderfil')
     if not request.user.picture:
         image = "/static/app/userphoto/default.png"
     else:
@@ -144,6 +156,7 @@ def editarUsuario(request):
             return redirect('/miPerfil')
          else:
             usuario = User.objects.get(username=current_user)
+            logger.error(usuario)
             if form.cleaned_data.get('first_name') is not None:
                 usuario.first_name = form.cleaned_data.get('first_name')
             if form.cleaned_data.get('last_name') is not None:
@@ -242,6 +255,50 @@ def quieroVerPelis(request):
             })
         )
 
+def recomendaciones(request):
+    """Renders the contact page."""
+    current_user = request.user
+    some = True
+
+    try: 
+        num = SeenFilm.objects.get(user=current_user.id)
+        num = str(num.id)
+        seen = Film.objects.raw('SELECT F.GENRES, COUNT(*), TITLE FROM APP_SEENFILM_FILMS SF, APP_FILM F WHERE SF.FILM_ID = F.TITLE AND SEENFILM_ID =' + num + ' GROUP BY F.GENRES ORDER BY COUNT(F.GENRES) DESC LIMIT 1')
+        for se in seen:
+            generos = se.genres
+            generos = generos.split(',')
+
+        mylist = list()
+
+        for genre in generos:
+            genre = genre.replace(" ", "")
+            mylist.append( Q(genres = genre) )
+
+        films = Film.objects.filter(reduce(operator.or_, mylist)).all()
+
+        return render(
+        request,
+            'app/recomendaciones.html',
+            context_instance = RequestContext(request,
+            {
+                'films':films,
+                'some':some,
+                'year':datetime.now().year,
+            })
+        )
+
+    except:
+        some = False
+        return render(
+            request,
+            'app/recomendaciones.html',
+            context_instance = RequestContext(request,
+            {
+                'some':some,
+                'year':datetime.now().year,
+            })
+        )
+
 #########################################################################################################
 #AMIGOS
 def usuario(request, usuario):
@@ -249,8 +306,16 @@ def usuario(request, usuario):
     current_user = request.user  
     current_user = User.objects.get(username=current_user)
 
+    noPrivate = True
+    friends = False
+    wanted = None
+    fullWanted = False
+    seen = None
+    fullSeen = False
+
     perfil = User.objects.get(username=perfil)
-    error = True
+    if perfil.privado:
+        noPrivate = False
 
     if not perfil.picture:
         image = "/static/app/userphoto/default.png"
@@ -260,19 +325,43 @@ def usuario(request, usuario):
     if request.user.is_authenticated():
         try:
             amigos = User.objects.get(username=current_user, amigos=perfil)
-            error=True
+            try:
+                seen = SeenFilm.objects.get(user=perfil)
+                seen = seen.films.all()
+                fullSeen = True
+            except:
+                fullSeen = False
+
+            try:
+                wanted = WantedFilm.objects.get(user=perfil)
+                wanted = wanted.films.all()
+                fullWanted = True
+            except:
+                fullWanted = False
+
+            friends = True
+            try:
+                amigos = User.objects.get(username=perfil, amigos=current_user)
+                noPrivate = True
+            except:
+                friends = True
         except:
-            error = False
+            friends = False
 
     return render(
         request,
         'app/usuario.html',
          context_instance = RequestContext(request,
         {
-             'usuario':perfil,
-             'amigos':error,
-             'image':image,
-             'year':datetime.now().year,
+             'usuario': perfil,
+             'amigos': friends,
+             'noPrivate': noPrivate,
+             'image': image,
+             'wanted': wanted,
+             'fullWanted': fullWanted,
+             'seen': seen,
+             'fullSeen': fullSeen,
+             'year': datetime.now().year,
         })
     )
 
@@ -415,6 +504,9 @@ def deleteAdd(request, film):
         noticia = News.objects.get(descripcion= current_user.username + " quiere ver " + film).delete()
     except:
         None
+
+    f.counter -= 1
+    f.save()
 
     html = "<html><body>Film %s and user %s deleted seen.</body></html>" % (f.title, current_user.id)
     return HttpResponse(html)

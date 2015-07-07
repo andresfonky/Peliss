@@ -62,13 +62,14 @@
                     <li><a href="{% url 'misPelis' %}">Mis pelis</a></li>
                     <li><a href="{% url 'quieroVerPelis' %}">Pelis para ver</a></li>
                     <li><a href="{% url 'miPerfil' %}">Mi perfil</a></li>
+                    <li><a href="{% url 'recomendaciones' %}">Recomendaciones</a></li>
                     {% endif %}
                 </ul>
                 <form class="navbar-form navbar-left" method="get" action="{% url 'search' %}">
                     <div class="form-group">
                         <input type="text" name="q" class="form-control" placeholder="Buscar">
                     </div>
-                    <button type="submit" value="Search" class="btn btn-default">Enviar</button>
+                    <button type="submit" value="Search" class="btn btn-default"> <i class="glyphicon glyphicon-search" style="color: black"></i></button>
                 </form>
                 {% include 'app/loginpartial.html' %}
             </div>
